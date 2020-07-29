@@ -240,7 +240,7 @@ CVE_2020_5902_BIG_IP_RCE
 
     # 检测payload
     def checkPayload(self):
-        targetAddr = self.ui.targetlineEdit.text()
+        targetAddr = self.ui.targetlineEdit.text() # 获取
         payload = self.ui.payloadCombo.currentText()
         module = 'rocCheckPayload.{}'.format(payload)
         importModule = importlib.import_module(module)
