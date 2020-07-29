@@ -40,7 +40,7 @@ def getTime():
 def showSuccess(message):
     print('[\033[1;94m{}\033[0;m] [\033[1;92m+\033[0;m] \033[1;92m{}\033[0;m'.format(getTime(), message))
 
-
+# 主入口
 class BackendThread(QThread):
     update_date = pyqtSignal(str)
     update_status = pyqtSignal(str)
