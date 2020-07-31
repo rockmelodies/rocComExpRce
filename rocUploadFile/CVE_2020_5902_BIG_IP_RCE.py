@@ -12,7 +12,7 @@ import re
 
 requests.packages.urllib3.disable_warnings()
 
-class CVE_2020_5902_BIG_IP_RCE(object):
+class run(object):
     def __init__(self):
         self.name = "CVE_2020_5902_BIG_IP_RCE"
 
