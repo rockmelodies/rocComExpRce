@@ -10,6 +10,8 @@ import json
 import time
 import requests
 
+import rocComExpRce
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -77,9 +79,10 @@ class run(object):
 
         if payload == 'CVE_2019_17558_Apache_Solr_Velocity':
             self.name_payload = run.getname(self, targetAddr)
-            print(self.name_payload)
+            if type(self.name_payload) is not "dict":
+                data = '{},无效的响应!'.format(targetAddr)
+                return {'status': 20003, 'data': data, 'type': 'status'}
             if 20000 in self.name_payload.values():
-                print(self.name_payload)
                 return self.name_payload
             else:
                 run.Modifyconf(self, targetAddr, self.name_payload)
