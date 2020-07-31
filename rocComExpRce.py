@@ -310,7 +310,7 @@ CVE_2020_5902_BIG_IP_RCE
         command = self.ui.commandCombo.currentText()
         module = 'rocCommondPayload.{}'.format(payload)
         importModule = importlib.import_module(module)
-        data = importModule.CVE_2020_5902_BIG_IP_RCE.runCommond(self, targetAddr, payload,command)
+        data = importModule.run.runCommond(self, targetAddr, payload,command)
         print(data)
         if data['type'] == 'status':
             self.textEditinfo.emit('{}'.format(data['data']))
