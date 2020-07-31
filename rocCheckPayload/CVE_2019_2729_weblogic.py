@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2020/7/31 9:34
+# @Author  : 柠檬菠萝
+# @Email   : yzpmihome@vip.qq.com
+# @File    : CVE_2019_2729_weblogic.py
+
 import requests
 import time
 import re
@@ -20,7 +27,6 @@ class run(object):
 
         if payload == 'CVE_2019_2729_weblogic':
             payload01 = r'/wls-wsat/CoordinatorPortType'
-            payload02 = r'/_async/AsyncResponseService'
         else:
             data = '您的输入有误,或者没有加HTTPS请求头!'
             return {'status': 20001, 'data': data, 'type': 'status'}
