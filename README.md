@@ -36,6 +36,8 @@
 - [x] CVE_2020_5902_BIG_IP_RCE 命令执行功能 贡献者：rocky
 - [x] CVE_2020_5902_BIG_IP_RCE 反弹shell功能 贡献者：rocky
 - [x] CVE_2020_5902_BIG_IP_RCE 文件上传功能 贡献者：rocky
+- [ ] CVE_2019_2729_weblogic 检测功能 贡献者：柠檬菠萝
+- [ ] CVE_2019_17558_Apache_Solr_Velocity 命令执行功能 贡献者：柠檬菠萝
 - [ ] 针对单个IP，批量检测某类型存在问题的漏洞编号，并返回结果
 - [ ] 批量检测UI重新设计
 
