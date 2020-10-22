@@ -90,7 +90,6 @@ class run(object):
             else:
                 status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
                 return {'status': 20004, 'data': status_data, 'type': 'status'}
-
         except requests.exceptions.RequestException as e:
             status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
             return {'status': 20002, 'data': status_data, 'type': 'status'}
