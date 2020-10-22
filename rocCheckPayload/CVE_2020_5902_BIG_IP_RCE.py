@@ -52,7 +52,7 @@ class run(object):
         if 'root' in req1.text or 'localhost' in req2.text:
             hostname = re.search(r'<p\stitle=\"(.*?)\">', req.text).group(1).strip().lower()
             data = '[+]{} - {} is vulnerable! {}'.format(targetAddr, hostname, currentTime)
-            return {'status': 20003, 'data': data, 'type': 'status'}
+            return {'status': 20000, 'data': data, 'type': 'status'}
         else:
             data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
             return {'status': 20004, 'data': data, 'type': 'status'}
