@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 
 class run(object):
     def __init__(self):
-        self.name = "CVE_2017_3248_weblogic"
+        self.name = "CVE_2017_3506_weblogic"
 
     def runCheck(self, targetAddr, payload):
         """
@@ -61,3 +61,5 @@ class run(object):
         except requests.exceptions.RequestException as e:
             status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
             return {'status': 20002, 'data': status_data, 'type': 'status'}
+
+
