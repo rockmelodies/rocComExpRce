@@ -40,6 +40,7 @@ class run(object):
             "Content-Type": "text/xml",
             "cmd": "{}".format("netstat -ano")
         }
+
         data = """<?xml version="1.0" encoding="utf-8" ?>
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
             xmlns:wsa="http://www.w3.org/2005/08/addressing"
