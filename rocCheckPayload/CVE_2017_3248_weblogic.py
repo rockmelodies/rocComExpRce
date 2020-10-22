@@ -28,6 +28,7 @@ class run(object):
         """
         currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
+
         if 'https://' in targetAddr or 'http://' in targetAddr:
             pass
         else:
