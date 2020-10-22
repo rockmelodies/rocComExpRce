@@ -15,8 +15,14 @@ requests.packages.urllib3.disable_warnings()
 class run(object):
     def __init__(self):
         self.name = "CVE_2020_5902_BIG_IP_RCE"
-    #检测payload部分
+
     def runCheck(self, targetAddr, payload):
+        """
+        CVE_2020_5902_BIG_IP_RCE
+        :param targetAddr:
+        :param payload:
+        :return:
+        """
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) \
         Chrome/53.0.2785.104 Safari/537.36 Core/1.53.4549.400 QQBrowser/9.7.12900.400"
