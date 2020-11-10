@@ -424,11 +424,23 @@ class MainWindow(QMainWindow, QObject):
         :return:
         '''
         targetAddr = self.ui.targetlineEdit.text()  # 获取big页面目标地址
+        if 'https://' in targetAddr or 'http://' in targetAddr:
+            pass
+        else:
+            targetAddr = 'http://' + targetAddr
+
+
         payload = self.ui.payloadCombo.currentText()
-        module = 'rocCheckPayload.{}'.format(payload)
+        # module = 'rocCheckPayload.{}'.format(payload)
+        # importModule = importlib.import_module(module)
+        # data = importModule.run.runCheck(self, targetAddr, payload)
+        # self.textEditinfo.emit('{}'.format(data['data']))
+        module = 'controller.rocCheckController'
         importModule = importlib.import_module(module)
-        data = importModule.run.runCheck(self, targetAddr, payload)
+        data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
         self.textEditinfo.emit('{}'.format(data['data']))
+
+
 
     def commondPayload(self):
         """
