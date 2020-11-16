@@ -44,7 +44,7 @@ class rocCheckController(object):
                     try:
                         header_dict = ast.literal_eval(header)
                         res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
-                        print(res)
+                        print(res.text)
                         if expression in res.text:
                             status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
 
