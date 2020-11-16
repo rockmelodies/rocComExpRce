@@ -22,6 +22,13 @@ class rocCheckController(object):
         self.name = "CVE_2017_10271_weblogic"
 
     def runCheck(self, targetAddr, payload):
+        """
+        加载外部程序
+        POC检测控制器
+        :param targetAddr:
+        :param payload:
+        :return:
+        """
         if payload == "CVE_2017_3248_weblogic":
             pass
             module = 'rocCheckPayload.{}'.format(payload)
@@ -29,7 +36,7 @@ class rocCheckController(object):
             data = importModule.run.runCheck(self, targetAddr, payload)
             return data
         else:
-            config = configparser.ConfigParser()
+            config = configparser.RawConfigParser()
             getCurPath = os.getcwd()
             configPath = '{}/rocCheckPayload/{}.ini'.format(getCurPath,payload)
             # print(configPath)
@@ -40,14 +47,14 @@ class rocCheckController(object):
 
             for option in options:
                 if (re.match('rules', option)) is not None:
-                    header = config.get(option, 'header')
-                    path = config.get(option, 'path')
-                    body = config.get(option, 'body')
                     method = config.get(option, 'method')
-                    expression = config.get(option, 'expression')
-                    url = targetAddr + path
 
                     if method == "POST":
+                        header = config.get(option, 'header')
+                        path = config.get(option, 'path')
+                        body = config.get(option, 'body')
+                        expression = config.get(option, 'expression')
+                        url = targetAddr + path
                         try:
                             header_dict = ast.literal_eval(header)
                             res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
@@ -61,6 +68,25 @@ class rocCheckController(object):
                         except requests.exceptions.RequestException as e:
                             status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
                             return {'status': 20002, 'data': status_data, 'type': 'status'}
+                    elif method == "GET":
+                        header = config.get(option, 'header')
+                        path = config.get(option, 'path')
+                        expression = config.get(option, 'expression')
+                        url = targetAddr + path
+                        try:
+                            header_dict = ast.literal_eval(header)
+                            res = requests.get(url, headers=header_dict, timeout=15, verify=False)
+                            if expression in res.text:
+                                status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
+                                return {'status': 20003, 'data': status_data, 'type': 'status'}
+                            else:
+                                status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
+                                return {'status': 20004, 'data': status_data, 'type': 'status'}
+                        except requests.exceptions.RequestException as e:
+                            status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
+                            return {'status': 20002, 'data': status_data, 'type': 'status'}
+                    else:
+                        pass
 
 
 
