@@ -12,6 +12,7 @@ import time
 import requests
 import os
 import ast
+import importlib
 
 requests.packages.urllib3.disable_warnings()
 
@@ -21,40 +22,45 @@ class rocCheckController(object):
         self.name = "CVE_2017_10271_weblogic"
 
     def runCheck(self, targetAddr, payload):
-        config = configparser.ConfigParser()
-        getCurPath = os.getcwd()
+        if payload == "CVE_2017_3248_weblogic":
+            pass
+            module = 'rocCheckPayload.{}'.format(payload)
+            importModule = importlib.import_module(module)
+            data = importModule.run.runCheck(self, targetAddr, payload)
+            return data
+        else:
+            config = configparser.ConfigParser()
+            getCurPath = os.getcwd()
+            configPath = '{}/rocCheckPayload/{}.ini'.format(getCurPath,payload)
+            # print(configPath)
+            config.read(configPath)
+            print(config.sections())
+            options = config.sections()
+            currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        configPath = '{}/rocCheckPayload/{}.ini'.format(getCurPath,payload)
-        # print(configPath)
-        config.read(configPath)
-        print(config.sections())
-        options = config.sections()
-        currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            for option in options:
+                if (re.match('rules', option)) is not None:
+                    header = config.get(option, 'header')
+                    path = config.get(option, 'path')
+                    body = config.get(option, 'body')
+                    method = config.get(option, 'method')
+                    expression = config.get(option, 'expression')
+                    url = targetAddr + path
 
-        for option in options:
-            if (re.match('rules', option)) is not None:
-                header = config.get(option, 'header')
-                path = config.get(option, 'path')
-                body = config.get(option, 'body')
-                method = config.get(option, 'method')
-                expression = config.get(option, 'expression')
-                url = targetAddr + path
+                    if method == "POST":
+                        try:
+                            header_dict = ast.literal_eval(header)
+                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
+                            if expression in res.text:
+                                status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
 
-                if method == "POST":
-                    try:
-                        header_dict = ast.literal_eval(header)
-                        res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
-                        print(res.text)
-                        if expression in res.text:
-                            status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
-
-                            return {'status': 20003, 'data': status_data, 'type': 'status'}
-                        else:
-                            status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
-                            return {'status': 20004, 'data': status_data, 'type': 'status'}
-                    except requests.exceptions.RequestException as e:
-                        status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
-                        return {'status': 20002, 'data': status_data, 'type': 'status'}
+                                return {'status': 20003, 'data': status_data, 'type': 'status'}
+                            else:
+                                status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
+                                return {'status': 20004, 'data': status_data, 'type': 'status'}
+                        except requests.exceptions.RequestException as e:
+                            status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
+                            return {'status': 20002, 'data': status_data, 'type': 'status'}
 
 
 
