@@ -11,6 +11,9 @@ import re
 import time
 import requests
 import os
+import ast
+
+requests.packages.urllib3.disable_warnings()
 
 
 class rocCheckController(object):
@@ -37,12 +40,11 @@ class rocCheckController(object):
                 expression = config.get(option, 'expression')
                 url = targetAddr + path
 
-                print(url)
-
                 if method == "POST":
-
                     try:
-                        res = requests.post(url, data=body, verify=False, timeout=5, headers=header)
+                        header_dict = ast.literal_eval(header)
+                        res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
+                        print(res)
                         if expression in res.text:
                             status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
 
