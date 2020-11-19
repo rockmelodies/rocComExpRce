@@ -49,6 +49,11 @@ class rocCheckController(object):
                 if (re.match('rules', option)) is not None:
                     method = config.get(option, 'method')
 
+                    proxies = {
+                        'http': '127.0.0.1:8089',
+                        'https': '127.0.0.1:8089'
+                    }
+
                     if method == "POST":
                         header = config.get(option, 'header')
                         path = config.get(option, 'path')
@@ -57,7 +62,8 @@ class rocCheckController(object):
                         url = targetAddr + path
                         try:
                             header_dict = ast.literal_eval(header)
-                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
+                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
+                            print(res.text)
                             if expression in res.text:
                                 status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
 
