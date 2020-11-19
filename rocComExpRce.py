@@ -239,7 +239,7 @@ class MainWindow(QMainWindow, QObject):
         self.ui.commandCombo_3.addItems(command_3items)
         self.ui.commondButton_6.clicked.connect(self.send)
         self.ui.emptyButton.clicked.connect(self.clearResult)
-        self.ui.commondButton.clicked.connect(self.execcommondPayload)
+        self.ui.commondButton.clicked.connect(self.execcommandPayload)
         self.ui.commondButton_2.clicked.connect(self.uploadfile)
         self.ui.commondButton_4.clicked.connect(self.openfile)
         self.ui.CheckButton.clicked.connect(self.execCheckPayloadb)
@@ -442,17 +442,21 @@ class MainWindow(QMainWindow, QObject):
 
 
 
-    def commondPayload(self):
+    def commandPayload(self):
         """
         利用payload命令执行
         :return:
         """
-        targetAddr = self.ui.targetlineEdit.text()
+        targetAddr = self.ui.targetlineEdit.text()  # 获取big页面目标地址
+        if 'https://' in targetAddr or 'http://' in targetAddr:
+            pass
+        else:
+            targetAddr = 'http://' + targetAddr
         payload = self.ui.payloadCombo.currentText()
         command = self.ui.commandCombo.currentText()
-        module = 'rocCommondPayload.{}'.format(payload)
+        module = 'controller.rocCommandController'
         importModule = importlib.import_module(module)
-        data = importModule.run.runCommond(self, targetAddr, payload, command)
+        data = importModule.rocCommandController.runCommand(self, targetAddr, payload,command)
         if data['type'] == 'status':
             self.textEditinfo.emit('{}'.format(data['data']))
         elif data['type'] == 'content':
@@ -515,12 +519,12 @@ class MainWindow(QMainWindow, QObject):
         thread = Thread(target=self.checkPayload)
         thread.start()
 
-    def execcommondPayload(self):
+    def execcommandPayload(self):
         """
         多线程执行命令，防止ui卡死
         :return:
         """
-        thread = Thread(target=self.commondPayload)
+        thread = Thread(target=self.commandPayload)
         thread.start()
 
     def startExecReb(self):
