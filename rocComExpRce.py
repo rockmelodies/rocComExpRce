@@ -269,19 +269,18 @@ class MainWindow(QMainWindow, QObject):
 
 
 
-#         basicTxt = '''
-# 警告：本工具为漏洞自查工具，请勿非法攻击他人网站！
-# F5 BIG-IP 是美国F5公司一款集成流量管理、DNS、出入站规则、web应用防火墙、web网关、负载均衡等功能的应用交付平台。
-# 【影响版本】
-# BIG-IP 15.x: 15.1.0/15.0.0
-# BIG-IP 14.x: 14.1.0 ~ 14.1.2
-# BIG-IP 13.x: 13.1.0 ~ 13.1.3
-# BIG-IP 12.x: 12.1.0 ~ 12.1.5
-# BIG-IP 11.x: 11.6.1 ~ 11.6.5
-# 【集成情况】
-# CVE_2020_5902_BIG_IP_RCE
-#         '''
-#         self.ui.basicInfoTextEdit.setText(basicTxt)
+        basicTxt = '''
+警告：本工具为漏洞自查工具，请勿非法攻击他人网站！
+ROC漏洞综合利用框架采用动态加载配置文件
+集成情况：
+CVE_2017_3248_weblogic 检测 可用
+CVE_2017_10271_weblogic 检测 命令执行 反弹shel 文件上传 可用
+CVE_2019_2725_weblogic_10_3_6 检测 命令执行 反弹shell 文件上传 可用
+CVE_2019_2729_weblogic_01 检测 命令执行 反弹shell 可用
+CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可用
+后续持续开发
+        '''
+        self.ui.basicInfoTextEdit.setText(basicTxt)
 
     def run_add_poc(self):
         """

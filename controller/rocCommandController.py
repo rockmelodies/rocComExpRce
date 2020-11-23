@@ -27,39 +27,6 @@ class rocCommandController(object):
     def __init__(self):
         self.name = "CVE_2017_10271_weblogic"
 
-    def _init_proxy(self):
-        """
-        初始化代理服务
-        """
-        # 代理服务（这里是macOX的调用文件）
-        path = r"/Users/rocky/pene_tool/rocComExpRce/jarpackage/browsermob-proxy-2.1.4/bin/browsermob-proxy"
-        # 初始化一个代理Manager服务，并监听8180端口
-        self.server = browsermobproxy.Server(path=path, options={'port': 8089})
-        # 启动代理Manager服务
-        self.server.start()
-        # 向代理Manager服务申请一个代理服务
-        self.proxy = self.server.create_proxy()
-
-    def _open_proxy(self, ref):
-        """
-        打开代理监控(要在网页打开前打开监控)
-        :param ref:注册的名称
-        :return:
-        """
-        options = {'captureContent': True, 'captureHeaders': True}
-        self.proxy.new_har(ref, options=options)
-
-    def _get_network(self):
-        """
-        获取请求列表
-        """
-        # 取出请求列表
-        result = self.proxy.har
-        # 遍历请求列表信息
-        for entry in result['log']['entries']:
-            req_url = entry['request']['url']
-            resp_content = entry["response"]['content']["text"]
-
     def runCommand(self, targetAddr, payload,command):
         """
         加载外部程序
@@ -72,7 +39,7 @@ class rocCommandController(object):
             pass
             module = 'rocCommandPayload.{}'.format(payload)
             importModule = importlib.import_module(module)
-            data = importModule.run.runCommand(self, targetAddr, payload)
+            data = importModule.run.runCommand(self, targetAddr, payload,command)
             return data
         else:
             getCurPath = os.getcwd()
