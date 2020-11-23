@@ -145,7 +145,7 @@ class rocUploadFileController(object):
                     if method == "POST":
                         header = speciConfig.get(specioption, 'header')
                         path = config.get(option, 'path')
-                        body = config.get(option, 'body')
+                        body = speciConfig.get(option, 'body')
                         access_path = config.get(option, 'access_path')
                         whrite_path = config.get(option, 'whrite_path')
 
@@ -165,7 +165,10 @@ class rocUploadFileController(object):
                             # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
                             print(res.text)
                             command_data = res.text
-
+                            # print(res.data.decode("utf-8"))
+                            # command_result = json.loads(res.content)
+                            # print(command_result)
+                            # command_data = command_result['output']
                             if expression not in res.text:
                                 try:
                                     return {'status': 20000, 'data': command_data, 'type': 'content','access_path': access_path, 'whrite_path': whrite_path}
