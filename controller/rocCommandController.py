@@ -118,10 +118,7 @@ class rocCommandController(object):
                             # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
                             print(res.text)
                             command_data = res.text
-                            # print(res.data.decode("utf-8"))
-                            # command_result = json.loads(res.content)
-                            # print(command_result)
-                            # command_data = command_result['output']
+
 
                             if expression not in res.text:
                                 try:
