@@ -466,6 +466,12 @@ class MainWindow(QMainWindow, QObject):
         :return:
         """
         targetAddr = self.ui.targetlineEdit.text()
+
+        targetAddr = self.ui.targetlineEdit.text()  # 获取big页面目标地址
+        if 'https://' in targetAddr or 'http://' in targetAddr:
+            pass
+        else:
+            targetAddr = 'http://' + targetAddr
         payload = self.ui.payloadCombo.currentText() # 获取payload编号
         lhost = self.ui.lipaddrlineEdit.text()
         print(lhost)
@@ -495,11 +501,17 @@ class MainWindow(QMainWindow, QObject):
         targetAddr = self.ui.targetlineEdit.text()
         payload = self.ui.payloadCombo.currentText()
         filepath = self.ui.localListenEdit_2.text()
+        checkBox = self.ui.checkBox.text() if self.ui.checkBox.isChecked() else ''
         content = self.ui.commandBasicInfoTextEdit_2.toPlainText()
 
-        module = 'rocUploadFile.{}'.format(payload)
+        module = 'controller.rocUploadFileController'
         importModule = importlib.import_module(module)
-        data = importModule.run.runUploadFile(self, targetAddr, payload,filepath,content)
+        getBasePathData = importModule.rocUploadFileController.runGetBasePath(self, targetAddr, payload , command="set")
+        filepathAll = getBasePathData['data']
+
+
+
+        data = importModule.rocUploadFileController.runUploadFile(self, targetAddr, payload, filepathAll, checkBox, content ,filepath)
         self.textEditinfo.emit('{}'.format(data['data']))
 
     def batchCheck(self):
