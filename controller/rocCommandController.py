@@ -60,7 +60,6 @@ class rocCommandController(object):
             specioptions = speciConfig.sections()
             currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-
             for option,specioption in zip(options,specioptions):
                 if (re.match('rules', option)) is not None:
                     method = config.get(option, 'method')
