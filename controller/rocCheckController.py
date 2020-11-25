@@ -35,6 +35,13 @@ class rocCheckController(object):
             importModule = importlib.import_module(module)
             data = importModule.run.runCheck(self, targetAddr, payload)
             return data
+        elif payload == "---weblogic_全部---":
+            module = 'comtroller.rocBatchCheckController'
+            importModule = importlib.import_module(module)
+            data = importModule.runBatchCheck(self, targetAddr, payload)
+            print(data)
+
+
         else:
             config = configparser.RawConfigParser()
             getCurPath = os.getcwd()

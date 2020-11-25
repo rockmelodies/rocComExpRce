@@ -1403,6 +1403,7 @@ class Ui_MainWindow(object):
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
         item_1 = QtWidgets.QTreeWidgetItem(item_0)
+        item_1 = QtWidgets.QTreeWidgetItem(item_0)
         item_0 = QtWidgets.QTreeWidgetItem(self.treeWidget)
         font = QtGui.QFont()
         font.setFamily("Kaiti SC")
