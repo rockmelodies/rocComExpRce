@@ -263,6 +263,29 @@ class SQLite_tools:
                         pass
         return value_list
 
+    def get_SQLtable_vul_hash(self,tbname,vul_number):
+        """
+        读取数据表获取指定vul_number 获取 vul_hash
+        :param tbname:
+        :param vul_number:
+        :return:
+        """
+        # SELECT * FROM 表名 WHERE ID = 行号;
+        name_list = self.get_SQLtable_column_name(tbname)
+        num = len(name_list)
+        q = QSqlQuery()
+        command = "SELECT vul_hash FROM {} WHERE vul_number='{}';".format(tbname, str(vul_number))
+        value_list = []
+        if q.exec_(command):
+            while q.next():
+                for i in range(0, num):
+                    value = q.value(i)
+                    if value is not None:
+                        value_list.append(value)
+                    else:
+                        pass
+        return value_list
+
 
 
 

@@ -428,14 +428,30 @@ CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可�
         else:
             targetAddr = 'http://' + targetAddr
 
-
         payload = self.ui.payloadCombo.currentText()
-        module = 'controller.rocCheckController'
-        importModule = importlib.import_module(module)
-        data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
-        self.textEditinfo.emit('{}'.format(data['data']))
 
+        if "___" in payload:
+            _translate = QtCore.QCoreApplication.translate
+            sql = SQLite_tools()
+            sql.create_SQL('./database/db/database.db')
+            data = sql.get_SQLtable_vul_hash('vul_number_relation', '{0}'.format(payload))
+            vul_hash = "".join(data)
 
+            data = sql.get_SQLtable_vul_number('vul_number_relation', '{0}'.format(vul_hash))
+
+            for payload in data:
+                if "___" not in payload:
+                    module = 'controller.rocCheckController'
+                    importModule = importlib.import_module(module)
+                    data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
+                    self.textEditinfo.emit('{}'.format(data['data']))
+                else:
+                    pass
+        else:
+            module = 'controller.rocCheckController'
+            importModule = importlib.import_module(module)
+            data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
+            self.textEditinfo.emit('{}'.format(data['data']))
 
     def commandPayload(self):
         """
