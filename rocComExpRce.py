@@ -14,9 +14,6 @@ import OperatingUi
 import importlib
 import hashlib
 from threading import Thread
-from queue import Queue
-import ctypes
-import inspect
 from PyQt5.QtCore import QThread, pyqtSignal, QDateTime, QObject
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog,QTreeWidgetItem
 
@@ -31,10 +28,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 requests.packages.urllib3.disable_warnings()
 
 # Headers 信息配置
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) \
-Chrome/53.0.2785.104 Safari/537.36 Core/1.53.4549.400 QQBrowser/9.7.12900.400"
-}
 
 
 def getTime():
