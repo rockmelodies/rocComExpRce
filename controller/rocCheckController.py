@@ -35,20 +35,11 @@ class rocCheckController(object):
             importModule = importlib.import_module(module)
             data = importModule.run.runCheck(self, targetAddr, payload)
             return data
-        elif payload == "---weblogic_全部---":
-            module = 'comtroller.rocBatchCheckController'
-            importModule = importlib.import_module(module)
-            data = importModule.runBatchCheck(self, targetAddr, payload)
-            print(data)
-
-
         else:
             config = configparser.RawConfigParser()
             getCurPath = os.getcwd()
-            configPath = '{}/rocCheckPayload/{}.ini'.format(getCurPath,payload)
-            # print(configPath)
+            configPath = '{}/rocCheckPayload/{}.ini'.format(getCurPath, payload)
             config.read(configPath)
-            print(config.sections())
             options = config.sections()
             currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
@@ -69,14 +60,13 @@ class rocCheckController(object):
                         url = targetAddr + path
                         try:
                             header_dict = ast.literal_eval(header)
-                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
-                            print(res.text)
+                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,
+                                                proxies=proxies)
                             if expression in res.text:
-                                status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
-
+                                status_data = '[+]{} is vulnerable! {} {}'.format(targetAddr, payload, currentTime)
                                 return {'status': 20003, 'data': status_data, 'type': 'status'}
                             else:
-                                status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
+                                status_data = '[-]{} is unvulnerable! {} {}'.format(targetAddr, payload, currentTime)
                                 return {'status': 20004, 'data': status_data, 'type': 'status'}
                         except requests.exceptions.RequestException as e:
                             status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
@@ -100,6 +90,3 @@ class rocCheckController(object):
                             return {'status': 20002, 'data': status_data, 'type': 'status'}
                     else:
                         pass
-
-
-

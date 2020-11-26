@@ -92,18 +92,9 @@ class rocUploadFileController(object):
             return {'status': 20000, 'data': command_data, 'type': 'status'}
 
 
-
-
-
-
         print(filepath)
         print(checkBox)
         print(content)
-
-
-
-
-
 
     def runGetBasePath(self, targetAddr, payload,command):
         """
