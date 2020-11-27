@@ -80,10 +80,10 @@ class rocCheckController(object):
                             header_dict = ast.literal_eval(header)
                             res = requests.get(url, headers=header_dict, timeout=15, verify=False)
                             if expression in res.text:
-                                status_data = '[+]{} is vulnerable! {}'.format(targetAddr, currentTime)
+                                status_data = '[+]{} is vulnerable! {} {}'.format(targetAddr, payload, currentTime)
                                 return {'status': 20003, 'data': status_data, 'type': 'status'}
                             else:
-                                status_data = '[-]{} is unvulnerable! {}'.format(targetAddr, currentTime)
+                                status_data = '[-]{} is unvulnerable! {} {}'.format(targetAddr, payload, currentTime)
                                 return {'status': 20004, 'data': status_data, 'type': 'status'}
                         except requests.exceptions.RequestException as e:
                             status_data = '[!]{} 请求超时! {}'.format(targetAddr, currentTime)
