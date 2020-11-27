@@ -78,7 +78,8 @@ class rocCheckController(object):
                         url = targetAddr + path
                         try:
                             header_dict = ast.literal_eval(header)
-                            res = requests.get(url, headers=header_dict, timeout=15, verify=False)
+                            res = requests.post(url, verify=False, timeout=5, headers=header_dict,
+                                                proxies=proxies)
                             if expression in res.text:
                                 status_data = '[+]{} is vulnerable! {} {}'.format(targetAddr, payload, currentTime)
                                 return {'status': 20003, 'data': status_data, 'type': 'status'}
