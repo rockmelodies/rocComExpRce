@@ -85,15 +85,15 @@ class MainWindow(QMainWindow, QObject):
         self.ui.commandCombo.addItems(commanditems)
         command_3items = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
                           "18", "19", "20", ]
-        self.ui.commandCombo_3.addItems(command_3items)
-        self.ui.commondButton_6.clicked.connect(self.startBatchCheck)
+        self.ui.threads_num.addItems(command_3items)
+        self.ui.startCheckButton.clicked.connect(self.startBatchCheck)
         self.ui.emptyButton.clicked.connect(self.clearResult)
         self.ui.commondButton.clicked.connect(self.execcommandPayload)
-        self.ui.commondButton_2.clicked.connect(self.startUploadFile)
-        self.ui.commondButton_4.clicked.connect(self.openfile)
+        self.ui.uploadFilesbutton.clicked.connect(self.startUploadFile)
+        self.ui.importButton.clicked.connect(self.openfile)
         self.ui.CheckButton.clicked.connect(self.execCheckPayloadb)
         self.ui.reboundButton.clicked.connect(self.startExecReb)
-        self.ui.commondButton_3.clicked.connect(self.stopBatchCheck)
+        self.ui.stopCheckButton.clicked.connect(self.stopBatchCheck)
 
         # 导航展示功能
         _translate = QtCore.QCoreApplication.translate
@@ -333,9 +333,9 @@ CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可�
         执行批量检测
         :return:
         """
-        thread_num = int(self.ui.commandCombo_3.currentText())  # 获取线程数
+        thread_num = int(self.ui.threads_num.currentText())  # 获取线程数
         payload = self.ui.payloadCombo.currentText()  # 获取漏洞Payload
-        targetTxtPath = self.ui.localListenEdit_3.text()  # 获取导入文件路径
+        targetTxtPath = self.ui.importFilePath.text()  # 获取导入文件路径
 
         print(event.isSet())
         event.wait()
@@ -372,7 +372,7 @@ CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可�
         """
         targetAddr = self.ui.targetlineEdit.text()
         payload = self.ui.payloadCombo.currentText()
-        filepath = self.ui.localListenEdit_2.text()
+        filepath = self.ui.filePathEdit.text()
         checkBox = self.ui.checkBox.text() if self.ui.checkBox.isChecked() else ''
         content = self.ui.commandBasicInfoTextEdit_2.toPlainText()
 
@@ -458,7 +458,7 @@ CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可�
                                                           "./",
                                                           "All Files (*);;Text Files (*.txt)")  # 设置文件扩展名过滤,注意用双分号间隔
 
-        return self.ui.localListenEdit_3.setText(fileName1)
+        return self.ui.importFilePath.setText(fileName1)
 
     def clearResult(self):
         self.ui.textEdit.clear()
