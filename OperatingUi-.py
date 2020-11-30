@@ -1435,7 +1435,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ROC综合漏洞RCE利用框架 by Rocky"))
         self.targetlineEdit.setPlaceholderText(_translate("MainWindow", "http://192.168.50.122:8080/index.php"))
         self.targetLabel.setText(_translate("MainWindow", "目标地址:"))
         self.payloadLabel.setText(_translate("MainWindow", "攻击载核:"))

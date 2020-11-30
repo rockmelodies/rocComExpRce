@@ -127,6 +127,14 @@ CVE_2017_10271_weblogic 检测 命令执行 反弹shel 文件上传 可用
 CVE_2019_2725_weblogic_10_3_6 检测 命令执行 反弹shell 文件上传 可用
 CVE_2019_2729_weblogic_01 检测 命令执行 反弹shell 可用
 CVE-2020-14882_weblogic_12_1_3 检测 命令执行 反弹shell 文件上传 可用
+Thinkphp5.0.10_RCE 检测 命令执行 反弹shell 文件上传 可用
+Thinkphp5.0.21_RCE 检测 命令执行 反弹shell 文件上传 可用
+Thinkphp5.0.21_RCE_bypass_01 检测 命令执行 反弹shell 文件上传 可用（来源:柠檬菠萝）
+Thinkphp5.0.22_RCE 检测 命令执行 反弹shell 文件上传 可用（来源:柠檬菠萝）
+Thinkphp5.0.22_RCE_bypass_01 检测 命令执行 反弹shell 文件上传 可用（来源:柠檬菠萝）
+Thinkphp5.0.23_RCE 检测 命令执行 反弹shell 文件上传 可用
+Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
+
 后续持续开发
         '''
         self.ui.basicInfoTextEdit.setText(basicTxt)
