@@ -19,15 +19,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import browsermobproxy
 
-
-
 requests.packages.urllib3.disable_warnings()
+
 
 class rocCommandController(object):
     def __init__(self):
         self.name = "CVE_2017_10271_weblogic"
 
-    def runCommand(self, targetAddr, payload,command):
+    def runCommand(self, targetAddr, payload, command):
         """
         加载外部程序
         POC检测控制器
@@ -39,17 +38,17 @@ class rocCommandController(object):
             pass
             module = 'rocCommandPayload.{}'.format(payload)
             importModule = importlib.import_module(module)
-            data = importModule.run.runCommand(self, targetAddr, payload,command)
+            data = importModule.run.runCommand(self, targetAddr, payload, command)
             return data
         else:
             getCurPath = os.getcwd()
-            configPath = '{}/rocCommandPayload/{}.ini'.format(getCurPath,payload)
+            configPath = '{}/rocCommandPayload/{}.ini'.format(getCurPath, payload)
             config = configparser.RawConfigParser()
             config.read(configPath)
             node = "rules-req01"
             key = "cmd"
             value = command
-            config.set(node,key,value)
+            config.set(node, key, value)
             fh = open(configPath, 'w')
             config.write(fh)
             fh.close()
@@ -60,10 +59,10 @@ class rocCommandController(object):
             specioptions = speciConfig.sections()
             currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-            for option,specioption in zip(options,specioptions):
+            for option, specioption in zip(options, specioptions):
                 if (re.match('rules', option)) is not None:
                     method = config.get(option, 'method')
-                    cmd = config.get(option,'cmd')
+                    cmd = config.get(option, 'cmd')
                     if method == "POST":
                         header = speciConfig.get(specioption, 'header')
                         path = config.get(option, 'path')
@@ -78,13 +77,13 @@ class rocCommandController(object):
                                 'http': '127.0.0.1:8089',
                                 'https': '127.0.0.1:8089'
                             }
-                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
+                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,
+                                                proxies=proxies)
                             # driver.quit()
                             print(body)
                             # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
                             print(res.text)
                             command_data = res.text
-
 
                             if expression not in res.text:
                                 try:
@@ -101,33 +100,25 @@ class rocCommandController(object):
                             return {'status': 20002, 'data': status_data, 'type': 'status'}
                     elif method == "GET":
                         header = speciConfig.get(specioption, 'header')
-                        path = config.get(option, 'path')
-                        # expression = config.get(option, 'expression')
+                        path = speciConfig.get(option, 'path')
+                        expression = config.get(option, 'expression')
                         url = targetAddr + path
-
+                        print(url)
 
                         try:
                             header_dict = ast.literal_eval(header)
-                            # print(1)
-                            # http = urllib3.PoolManager(timeout = 4.0)
-                            # print(body)
-                            # proxies = {
-                            #     'http': '127.0.0.1:8089',
-                            #     'https': '127.0.0.1:8089'
-                            # }
-                            # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
 
-                            res = requests.get(url, verify=False, timeout=5, headers=header_dict)
+                            proxies = {
+                                'http': '127.0.0.1:8089',
+                                'https': '127.0.0.1:8089'
+                            }
+                            res = requests.get(url, verify=False, timeout=5, headers=header_dict,
+                                                proxies=proxies)
 
-                            print(res.text)
-                            # print(res.data.decode("utf-8"))
-
-                            command_result = json.loads(res.content)
-                            # print(command_result)
-                            command_data = command_result['output']
+                            command_data = res.text
                             print(command_data)
 
-                            if "<html" not in res.text and "<TITLE" not in res.text :
+                            if expression not in res.text:
                                 try:
                                     return {'status': 20000, 'data': command_data, 'type': 'content'}
                                 except Exception as e:
@@ -142,4 +133,3 @@ class rocCommandController(object):
                             return {'status': 20002, 'data': status_data, 'type': 'status'}
                     else:
                         pass
-

@@ -21,7 +21,7 @@ class rocReboundController(object):
     def __init__(self):
         self.name = "反弹shell控制器"
 
-    def runRebound(self, targetAddr,payload,reboundData):
+    def runRebound(self, targetAddr, payload, reboundData):
         """
         加载外部程序
         POC检测控制器
@@ -38,13 +38,13 @@ class rocReboundController(object):
             return data
         else:
             getCurPath = os.getcwd()
-            configPath = '{}/rocReboundPayload/{}.ini'.format(getCurPath,payload)
+            configPath = '{}/rocReboundPayload/{}.ini'.format(getCurPath, payload)
             config = configparser.RawConfigParser()
             config.read(configPath)
             node = "rules-req01"
             key = "cmd"
             value = reboundData
-            config.set(node,key,value)
+            config.set(node, key, value)
             fh = open(configPath, 'w')
             config.write(fh)
             fh.close()
@@ -55,10 +55,10 @@ class rocReboundController(object):
             specioptions = speciConfig.sections()
             currentTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-            for option,specioption in zip(options,specioptions):
+            for option, specioption in zip(options, specioptions):
                 if (re.match('rules', option)) is not None:
                     method = config.get(option, 'method')
-                    cmd = config.get(option,'cmd')
+                    cmd = config.get(option, 'cmd')
                     if method == "POST":
                         header = speciConfig.get(specioption, 'header')
                         path = config.get(option, 'path')
@@ -73,16 +73,9 @@ class rocReboundController(object):
                                 'http': '127.0.0.1:8089',
                                 'https': '127.0.0.1:8089'
                             }
-                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
-                            # driver.quit()
-                            print(body)
-                            # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
-                            print(res.text)
+                            res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,
+                                                proxies=proxies)
                             command_data = res.text
-                            # print(res.data.decode("utf-8"))
-                            # command_result = json.loads(res.content)
-                            # print(command_result)
-                            # command_data = command_result['output']
 
                             if expression not in res.text:
                                 try:
@@ -99,33 +92,20 @@ class rocReboundController(object):
                             return {'status': 20002, 'data': status_data, 'type': 'status'}
                     elif method == "GET":
                         header = speciConfig.get(specioption, 'header')
-                        path = config.get(option, 'path')
-                        # expression = config.get(option, 'expression')
+                        path = speciConfig.get(option, 'path')
+                        expression = config.get(option, 'expression')
                         url = targetAddr + path
-
 
                         try:
                             header_dict = ast.literal_eval(header)
-                            # print(1)
-                            # http = urllib3.PoolManager(timeout = 4.0)
-                            # print(body)
-                            # proxies = {
-                            #     'http': '127.0.0.1:8089',
-                            #     'https': '127.0.0.1:8089'
-                            # }
-                            # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict,proxies=proxies)
+                            proxies = {
+                                'http': '127.0.0.1:8089',
+                                'https': '127.0.0.1:8089'
+                            }
+                            res = requests.post(url, verify=False, timeout=5, headers=header_dict, proxies=proxies)
+                            command_data = res.text
 
-                            res = requests.get(url, verify=False, timeout=5, headers=header_dict)
-
-                            print(res.text)
-                            # print(res.data.decode("utf-8"))
-
-                            command_result = json.loads(res.content)
-                            # print(command_result)
-                            command_data = command_result['output']
-                            print(command_data)
-
-                            if "<html" not in res.text and "<TITLE" not in res.text :
+                            if expression not in res.text:
                                 try:
                                     return {'status': 20000, 'data': command_data, 'type': 'content'}
                                 except Exception as e:
