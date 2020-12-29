@@ -13,11 +13,7 @@ import requests
 import os
 import ast
 import importlib
-import json
-import base64
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import browsermobproxy
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -49,7 +45,7 @@ class rocCommandController(object):
             key = "cmd"
             value = command
             config.set(node, key, value)
-            fh = open(configPath, 'w')
+            fh = open(configPath, 'w',encoding='utf-8')
             config.write(fh)
             fh.close()
             options = config.sections()
