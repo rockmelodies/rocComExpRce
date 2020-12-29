@@ -16,16 +16,13 @@ import hashlib
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal,QObject
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-from controller import rocCheckController
-from controller import rocCommandController
-from controller import rocReboundController
-from controller import rocUploadFileController
+from bak.controller import rocCheckController, rocCommandController, rocUploadFileController, rocReboundController
 from PyQt5.QtWidgets import QMessageBox
 from database.SQLite_tools import SQLite_tools
 from linkage.linkage.linkage import linkAllAge
 import requests
 import time, random
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore
 
 
 # 取消SSL证书错误告警
@@ -319,7 +316,7 @@ Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
         # module = 'controller.rocCommandController'
         # importModule = importlib.import_module(module)
         # data = importModule.rocCommandController.runCommand(self, targetAddr, payload,command)
-        data = rocCommandController.rocCommandController.runCommand(self,targetAddr,payload,command)
+        data = rocCommandController.rocCommandController.runCommand(self, targetAddr, payload, command)
         if data['type'] == 'status':
             self.textEditinfo.emit('{}'.format(data['data']))
         elif data['type'] == 'content':
@@ -355,7 +352,7 @@ Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
         # module = 'controller.rocReboundController'
         # importModule = importlib.import_module(module)
         # data = importModule.rocReboundController.runRebound(self, targetAddr,payload,reboundData)
-        data = rocReboundController.rocReboundController.runRebound(self, targetAddr,payload,reboundData)
+        data = rocReboundController.rocReboundController.runRebound(self, targetAddr, payload, reboundData)
         self.textEditinfo.emit('{}'.format(data['data']))
 
     def execbackendCheck(self,event):
@@ -409,11 +406,11 @@ Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
         # module = 'controller.rocUploadFileController'
         # importModule = importlib.import_module(module)
         # getBasePathData = importModule.rocUploadFileController.runGetBasePath(self, targetAddr, payload , command="set")
-        getBasePathData = rocUploadFileController.rocUploadFileController.runGetBasePath(self, targetAddr, payload , command="set")
+        getBasePathData = rocUploadFileController.rocUploadFileController.runGetBasePath(self, targetAddr, payload, command="set")
         filepathAll = getBasePathData['data']
 
         # data = importModule.rocUploadFileController.runUploadFile(self, targetAddr, payload, filepathAll, checkBox, content ,filepath)
-        data = rocUploadFileController.rocUploadFileController.runUploadFile(self, targetAddr, payload, filepathAll, checkBox, content ,filepath)
+        data = rocUploadFileController.rocUploadFileController.runUploadFile(self, targetAddr, payload, filepathAll, checkBox, content, filepath)
         self.textEditinfo.emit('{}'.format(data['data']))
 
     def batchCheck(self):
