@@ -8,6 +8,7 @@
 
 
 import sys
+import logging
 from datetime import datetime
 import threading
 import OperatingUi
@@ -24,11 +25,11 @@ import requests
 import time, random
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 # 取消SSL证书错误告警
 requests.packages.urllib3.disable_warnings()
 
 # Headers 信息配置
-
 
 def getTime():
     """
@@ -282,6 +283,24 @@ Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
             importModule = importlib.import_module(module)
             data = importModule.rocCheckController.runCheck(self, targetAddr, payload)
             self.textEditinfo.emit('{}'.format(data['data']))
+
+            logger = logging.getLogger(__name__)
+            logger.setLevel(level=logging.INFO)
+            handler = logging.FileHandler("log.txt")
+            handler.setLevel(logging.INFO)
+            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+
+            console = logging.StreamHandler()
+            console.setLevel(logging.INFO)
+
+            logger.addHandler(handler)
+            logger.addHandler(console)
+
+            logger.info("Start print log")
+            logger.debug("Do something")
+            logger.warning("Something maybe fail.")
+            logger.info("Finish")
 
     def commandPayload(self):
         """
