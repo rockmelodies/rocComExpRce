@@ -1387,7 +1387,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "ROC综合漏洞RCE利用框架 by Rocky"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ROC综合漏洞RCE利用框架 by Rocky 版本v1.1.0"))
         self.treeWidget.headerItem().setText(0, _translate("MainWindow", "导航栏"))
         __sortingEnabled = self.treeWidget.isSortingEnabled()
         self.treeWidget.setSortingEnabled(False)
