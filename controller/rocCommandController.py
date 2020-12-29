@@ -45,7 +45,7 @@ class rocCommandController(object):
             key = "cmd"
             value = command
             config.set(node, key, value)
-            fh = open(configPath, 'w')
+            fh = open(configPath, 'w',encoding='utf-8')
             config.write(fh)
             fh.close()
             options = config.sections()

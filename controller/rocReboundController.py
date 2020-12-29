@@ -12,7 +12,6 @@ import time
 import requests
 import os
 import ast
-import importlib
 
 requests.packages.urllib3.disable_warnings()
 
@@ -32,10 +31,10 @@ class rocReboundController(object):
         print(reboundData)
         if payload == "CVE_2017_3248_weblogic":
             pass
-            module = 'rocReboundPayload.{}'.format(payload)
-            importModule = importlib.import_module(module)
-            data = importModule.run.runCommand(self, targetAddr, payload)
-            return data
+            # module = 'rocReboundPayload.{}'.format(payload)
+            # importModule = importlib.import_module(module)
+            # data = importModule.run.runCommand(self, targetAddr, payload)
+            # return data
         else:
             getCurPath = os.getcwd()
             configPath = '{}/rocReboundPayload/{}.ini'.format(getCurPath, payload)
@@ -45,7 +44,7 @@ class rocReboundController(object):
             key = "cmd"
             value = reboundData
             config.set(node, key, value)
-            fh = open(configPath, 'w')
+            fh = open(configPath, 'w',encoding='utf-8')
             config.write(fh)
             fh.close()
             options = config.sections()
