@@ -16,7 +16,7 @@ import hashlib
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal,QObject
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-from bak.controller import rocCheckController, rocCommandController, rocUploadFileController, rocReboundController
+from controller import rocCheckController, rocCommandController, rocUploadFileController, rocReboundController
 from PyQt5.QtWidgets import QMessageBox
 from database.SQLite_tools import SQLite_tools
 from linkage.linkage.linkage import linkAllAge
