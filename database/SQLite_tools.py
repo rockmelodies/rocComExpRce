@@ -220,6 +220,48 @@ class SQLite_tools:
                     value_list.append(value)
         return value_list[0]
 
+    def get_SQLtable_vul_name_top_level_item_id(self,tbname, vul_name):
+        '''
+        读取数据表指定行vul_name的top_level_item_id-id数据
+        :param tbname: 数据表名称
+        :param column: 行名称
+        :return 返回查询到的值列表
+        '''
+        # SELECT * FROM 表名 WHERE ID = 行号;
+        name_list = self.get_SQLtable_column_name(tbname)
+        num = len(name_list)
+        q = QSqlQuery()
+        command = "SELECT top_level_item FROM {} WHERE vul_name='{}';".format(tbname, str(vul_name))
+        value_list = []
+        # print(command)
+        if q.exec_(command):
+            while q.next():
+                for i in range(0, num):
+                    value = q.value(i)
+                    value_list.append(value)
+        return value_list[0]
+
+    def get_SQLtable_vul_name_child_id(self,tbname, vul_name):
+        '''
+        读取数据表指定行vul_name的top_level_item_id-id数据
+        :param tbname: 数据表名称
+        :param column: 行名称
+        :return 返回查询到的值列表
+        '''
+        # SELECT * FROM 表名 WHERE ID = 行号;
+        name_list = self.get_SQLtable_column_name(tbname)
+        num = len(name_list)
+        q = QSqlQuery()
+        command = "SELECT child_id FROM {} WHERE vul_name='{}';".format(tbname, str(vul_name))
+        value_list = []
+        # print(command)
+        if q.exec_(command):
+            while q.next():
+                for i in range(0, num):
+                    value = q.value(i)
+                    value_list.append(value)
+        return value_list[0]
+
     def get_SQLtable_vul_name_hash(self,tbname, vul_name):
         '''
         读取数据表指定行vul_name的vul_hash数据
