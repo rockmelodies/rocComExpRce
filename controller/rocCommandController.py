@@ -65,7 +65,6 @@ class rocCommandController(object):
                         body = speciConfig.get(option, 'body')
                         expression = config.get(option, 'expression')
                         url = targetAddr + path
-                        print(url)
 
                         try:
                             header_dict = ast.literal_eval(header)
@@ -78,6 +77,8 @@ class rocCommandController(object):
                             # driver.quit()
                             print(body)
                             # res = requests.post(url, data=body, verify=False, timeout=5, headers=header_dict)
+                            print(res.encoding)
+                            res.encoding = 'utf-8'
                             print(res.text)
                             command_data = res.text
 
@@ -111,6 +112,7 @@ class rocCommandController(object):
                             res = requests.get(url, verify=False, timeout=5, headers=header_dict,
                                                 proxies=proxies)
 
+                            res.encoding = 'utf-8'
                             command_data = res.text
                             print(command_data)
 
