@@ -149,6 +149,7 @@ Thinkphp5.0.22_RCE 检测 命令执行 反弹shell 文件上传 可用（来源:
 Thinkphp5.0.22_RCE_bypass_01 检测 命令执行 反弹shell 文件上传 可用（来源:柠檬菠萝）
 Thinkphp5.0.23_RCE 检测 命令执行 反弹shell 文件上传 可用
 Thinkphp5.1.29_RCE 检测 命令执行 反弹shell 文件上传 可用
+2021-2-2 APACHE DRUID RCE EXP (CVE-2021-25646) 反弹功能已经集成
 感谢ver007建议POC、EXP采用加载配置文件
 
 后续持续开发
