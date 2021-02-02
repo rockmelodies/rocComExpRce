@@ -61,7 +61,7 @@ class rocReboundController(object):
                     if method == "POST":
                         header = speciConfig.get(specioption, 'header')
                         path = config.get(option, 'path')
-                        body = config.get(option, 'body')
+                        body = speciConfig.get(specioption, 'body')
                         expression = config.get(option, 'expression')
                         url = targetAddr + path
                         print(url)
